@@ -1,5 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:quizzler/quiz_brain.dart';
 import 'dart:math';
+
+import 'question-data.dart';
+
+QuizBrain quizBrain = QuizBrain();
 
 void main() => runApp(Quizzler());
 
@@ -26,17 +31,9 @@ class QuizPage extends StatefulWidget {
 }
 
 class _QuizPageState extends State<QuizPage> {
-  int questionIndex = 0;
   List<Icon> scoreKeeper = [];
-  List<QuestionData> questions = [
-    QuestionData('You can lead a cow down stairs but not up stairs.', false),
-    QuestionData(
-        'Approximately one quarter of human bones are in the feet.', true),
-    QuestionData('A slug\'s blood is green.', true),
-  ];
 
-  List<Expanded> getQuestionFields(int index) {
-    QuestionData currentQuestionData = questions[index];
+  List<Expanded> getQuestionFields() {
     return [
       Expanded(
         flex: 5,
@@ -44,7 +41,7 @@ class _QuizPageState extends State<QuizPage> {
           padding: EdgeInsets.all(10.0),
           child: Center(
             child: Text(
-              currentQuestionData.text,
+              quizBrain.getQuestionText(),
               textAlign: TextAlign.center,
               style: TextStyle(
                 fontSize: 25.0,
@@ -68,7 +65,7 @@ class _QuizPageState extends State<QuizPage> {
               ),
             ),
             onPressed: () {
-              handleAnswer(currentQuestionData.isTrue);
+              handleAnswer(quizBrain.getQuestionAnswer());
             },
           ),
         ),
@@ -86,7 +83,7 @@ class _QuizPageState extends State<QuizPage> {
               ),
             ),
             onPressed: () {
-              handleAnswer(!currentQuestionData.isTrue);
+              handleAnswer(!quizBrain.getQuestionAnswer());
             },
           ),
         ),
@@ -100,7 +97,7 @@ class _QuizPageState extends State<QuizPage> {
         isCorrect ? Icons.check : Icons.close,
         color: isCorrect ? Colors.green : Colors.red,
       ));
-      questionIndex = min(questionIndex + 1, questions.length - 1);
+      quizBrain.nextQuestion();
     });
   }
 
@@ -110,21 +107,12 @@ class _QuizPageState extends State<QuizPage> {
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: <Widget>[
-        ...getQuestionFields(questionIndex),
+        ...getQuestionFields(),
         Wrap(
           children: scoreKeeper,
         ),
       ],
     );
-  }
-}
-
-class QuestionData {
-  String text;
-  bool isTrue;
-  QuestionData(String text, bool isTrue) {
-    this.text = text;
-    this.isTrue = isTrue;
   }
 }
 
