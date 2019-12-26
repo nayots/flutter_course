@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:quizzler/quiz_brain.dart';
-import 'dart:math';
-
-import 'question-data.dart';
+import 'package:rflutter_alert/rflutter_alert.dart';
 
 QuizBrain quizBrain = QuizBrain();
 
@@ -93,11 +91,20 @@ class _QuizPageState extends State<QuizPage> {
 
   void handleAnswer(bool isCorrect) {
     setState(() {
-      scoreKeeper.add(Icon(
-        isCorrect ? Icons.check : Icons.close,
-        color: isCorrect ? Colors.green : Colors.red,
-      ));
-      quizBrain.nextQuestion();
+      if (quizBrain.isFinished()) {
+        Alert alrt = Alert(
+            context: this.context,
+            title: 'Finished!',
+            desc: 'You\'ve reached the end of the quiz.');
+        alrt.show();
+        scoreKeeper.clear();
+      } else {
+        scoreKeeper.add(Icon(
+          isCorrect ? Icons.check : Icons.close,
+          color: isCorrect ? Colors.green : Colors.red,
+        ));
+        quizBrain.nextQuestion();
+      }
     });
   }
 

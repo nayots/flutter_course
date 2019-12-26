@@ -49,4 +49,15 @@ class QuizBrain {
   bool getQuestionAnswer() {
     return this._questions[this._questionIndex].answer;
   }
+
+  bool isFinished() {
+    final bool isLastQuestion =
+        (this._questions.length - 1) == this._questionIndex;
+    print('Is last question $isLastQuestion');
+    return isLastQuestion;
+  }
+
+  void reset() {
+    this._questionIndex = 0;
+  }
 }
