@@ -24,7 +24,7 @@ class _InputPageState extends State<InputPage> {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-          title: Center(child: Text('BMI CALCULATOR')),
+          title: Text('BMI CALCULATOR'),
         ),
         body: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -206,11 +206,21 @@ class _InputPageState extends State<InputPage> {
                 )
               ],
             )),
-            Container(
-              color: kBottomContainerColor,
-              margin: EdgeInsets.only(top: 10.0),
-              width: double.infinity,
-              height: kBottomContainerHeight,
+            GestureDetector(
+              onTap: () {
+                Navigator.pushNamed(context, '/results');
+              },
+              child: Container(
+                child: Center(
+                  child: Text(
+                    'CALCULATE',
+                  ),
+                ),
+                color: kBottomContainerColor,
+                margin: EdgeInsets.only(top: 10.0),
+                width: double.infinity,
+                height: kBottomContainerHeight,
+              ),
             ),
           ],
         ));
