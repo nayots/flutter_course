@@ -1,13 +1,15 @@
+import 'package:bmi_calculator/components/bottom_button.dart';
+import 'package:bmi_calculator/components/gender.dart';
+import 'package:bmi_calculator/components/icon_content.dart';
+import 'package:bmi_calculator/components/reusable_card.dart';
+import 'package:bmi_calculator/components/round_icon_button.dart';
+import 'package:bmi_calculator/screens/results_page.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:bmi_calculator/calculator_brain.dart';
 
-import 'constants.dart';
-import 'gender.dart';
-import 'icon_content.dart';
-import 'reusable_card.dart';
+import '../constants.dart';
 import 'dart:math';
-
-import 'round_icon_button.dart';
 
 class InputPage extends StatefulWidget {
   @override
@@ -206,21 +208,22 @@ class _InputPageState extends State<InputPage> {
                 )
               ],
             )),
-            GestureDetector(
+            BottomButton(
               onTap: () {
-                Navigator.pushNamed(context, '/results');
+                CalculatorBrain calc = CalculatorBrain(
+                  height: height,
+                  weight: weight,
+                );
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => ResultsPage(
+                              bmiResult: calc.calculateBMI(),
+                              resultText: calc.getResult(),
+                              interpretation: calc.getInterpretation(),
+                            )));
               },
-              child: Container(
-                child: Center(
-                  child: Text(
-                    'CALCULATE',
-                  ),
-                ),
-                color: kBottomContainerColor,
-                margin: EdgeInsets.only(top: 10.0),
-                width: double.infinity,
-                height: kBottomContainerHeight,
-              ),
+              buttonTitle: 'CALCULATE',
             ),
           ],
         ));
